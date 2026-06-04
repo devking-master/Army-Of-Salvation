@@ -1,3 +1,0 @@
-import type { Metadata } from "next";import SectionHeader from "@/components/SectionHeader";import EventCard from "@/components/EventCard";import { events } from "@/data/site";
-export const metadata:Metadata={title:"Events",description:"Upcoming Boys Brigade events."};
-export default function Events(){return <section className="section-pad min-h-screen bg-night pt-28 sm:pt-32"><div className="container-pad"><SectionHeader title="Mission Calendar" subtitle="Upcoming command activities, parade services, camps, and formation events."/><div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{events.map(e=><EventCard key={e.id} event={e}/>)}</div></div></section>}

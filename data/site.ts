@@ -2,7 +2,6 @@ export const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "Mission" },
   { href: "/activities", label: "Operations" },
-  { href: "/events", label: "Events" },
   { href: "/gallery", label: "Archive" },
   { href: "/leadership", label: "Command" },
   { href: "/join", label: "Join" },

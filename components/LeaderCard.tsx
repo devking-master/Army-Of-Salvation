@@ -13,9 +13,6 @@ export default function LeaderCard({ leader }: { leader: Leader & { image?: stri
         ) : (
           <div className="grid h-full place-items-center bg-cyan-300/10"><UserRound /></div>
         )}
-        <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-cyan-300/20 bg-black/30 px-3 py-2 backdrop-blur-xl sm:right-auto">
-          <p className="text-[10px] font-black uppercase tracking-[.2em] text-cyan-100">{leader.role}</p>
-        </div>
       </div>
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <h3 className="text-lg font-black text-white sm:text-xl">{leader.name}</h3>

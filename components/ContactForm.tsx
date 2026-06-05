@@ -7,6 +7,9 @@ import { contactSchema, ContactInput } from "@/lib/validation";
 
 export default function ContactForm() {
   const [ok, setOk] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const accessKey = process.env.NEXT_PUBLIC_WEB3FORM_ACCESS_KEY;
+
   const {
     register,
     handleSubmit,
@@ -14,9 +17,34 @@ export default function ContactForm() {
     reset,
   } = useForm<ContactInput>({ resolver: zodResolver(contactSchema) });
 
-  async function onSubmit() {
+  async function onSubmit(data: ContactInput) {
     setOk(false);
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    setServerError(null);
+
+    if (!accessKey) {
+      setServerError("Web3Forms access key is missing.");
+      return;
+    }
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        access_key: accessKey,
+        subject: "New contact message from Army of Salvation",
+        name: data.name,
+        email: data.email,
+        message: data.message,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || result.success === false) {
+      setServerError(result.message || "Unable to send message. Please try again.");
+      return;
+    }
+
     setOk(true);
     reset();
   }
@@ -43,6 +71,7 @@ export default function ContactForm() {
       <button disabled={isSubmitting} className="command-btn mt-5 disabled:cursor-not-allowed disabled:opacity-70">
         {isSubmitting ? "Sending..." : "Send Signal"}
       </button>
+      {serverError && <p className="mt-4 text-sm text-red-300">{serverError}</p>}
       {ok && <p className="mt-4 text-sm text-emerald-300">Signal delivered successfully.</p>}
     </form>
   );

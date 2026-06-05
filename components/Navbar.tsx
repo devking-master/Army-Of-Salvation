@@ -29,7 +29,7 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-5 lg:flex">
-          {navLinks.slice(0, 5).map((l) => (
+          {navLinks.filter(l => l.href !== '/join').map((l) => (
             <Link
               key={l.href}
               href={l.href}

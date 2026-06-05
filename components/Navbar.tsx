@@ -29,7 +29,7 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-5 lg:flex">
-          {navLinks.slice(0, 6).map((l) => (
+          {navLinks.slice(0, 5).map((l) => (
             <Link
               key={l.href}
               href={l.href}
@@ -46,7 +46,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link href="/join" className="command-btn px-5 py-2">
-            Initiate
+            Join
           </Link>
         </div>
 

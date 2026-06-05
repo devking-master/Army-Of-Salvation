@@ -1,10 +1,10 @@
-# BB Command Website
+# ARMY OF SALVATION Website
 
 A futuristic Boys' Brigade website built with Next.js, TypeScript, Tailwind CSS, Framer Motion, React Hook Form, Zod, and Lucide icons.
 
 ## Features
 
-- Futuristic BB Command visual style
+- Futuristic ARMY OF SALVATION visual style
 - Responsive navbar and mobile menu
 - Hero with uploaded Boys' Brigade photos
 - Activities, events, gallery, leadership, join, contact, and member profile pages

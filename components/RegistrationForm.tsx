@@ -7,6 +7,9 @@ import { registrationSchema, RegistrationInput } from "@/lib/validation";
 
 export default function RegistrationForm() {
   const [ok, setOk] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const accessKey = process.env.NEXT_PUBLIC_WEB3FORM_ACCESS_KEY;
+
   const {
     register,
     handleSubmit,
@@ -14,9 +17,36 @@ export default function RegistrationForm() {
     reset,
   } = useForm<RegistrationInput>({ resolver: zodResolver(registrationSchema) });
 
-  async function onSubmit() {
+  async function onSubmit(data: RegistrationInput) {
     setOk(false);
-    await new Promise((resolve) => setTimeout(resolve, 900));
+    setServerError(null);
+
+    if (!accessKey) {
+      setServerError("Web3Forms access key is missing.");
+      return;
+    }
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        access_key: accessKey,
+        subject: "New registration from Army of Salvation",
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        age: data.age,
+        message: data.message,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || result.success === false) {
+      setServerError(result.message || "Unable to submit registration. Please try again.");
+      return;
+    }
+
     setOk(true);
     reset();
   }
@@ -61,6 +91,11 @@ export default function RegistrationForm() {
       <button disabled={isSubmitting} className="command-btn mt-5 w-full disabled:cursor-not-allowed disabled:opacity-70">
         {isSubmitting ? "Establishing Connection..." : "Establish Connection"}
       </button>
+      {serverError && (
+        <p className="mt-4 rounded-xl border border-red-400/25 bg-red-400/10 p-3 text-center text-sm text-red-200">
+          {serverError}
+        </p>
+      )}
       {ok && (
         <p className="mt-4 rounded-xl border border-emerald-400/25 bg-emerald-400/10 p-3 text-center text-sm text-emerald-200">
           Registration received successfully. Command will contact you soon.
